@@ -71,6 +71,10 @@ async function run() {
 }
 run().catch(console.dir);
 
+app.get("/hero", (req, res) => {
+  res.send("This is heroku demo");
+});
+
 app.get("/", (req, res) => {
   res.send("Hello food delivery");
 });
