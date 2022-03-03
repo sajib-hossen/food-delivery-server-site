@@ -23,6 +23,36 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
+    const database = client.db("food_delivery");
+    const productCollection = database.collection("products");
+
+    // get single api system
+
+    app.get("/products/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await productCollection.findOne(query);
+      console.log(result);
+      res.send(result);
+    });
+
+    // get api system
+
+    app.get("/products", async (req, res) => {
+      const cursor = productCollection.find({});
+      const result = await cursor.toArray();
+
+      res.send(result);
+    });
+
+    // post api system
+
+    app.post("/products", async (req, res) => {
+      const products = req.body;
+      const results = await productCollection.insertOne(products);
+
+      res.json(results);
+    });
 
     console.log("connect to database int hitting");
   } finally {
