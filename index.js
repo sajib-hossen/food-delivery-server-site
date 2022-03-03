@@ -25,6 +25,7 @@ async function run() {
     await client.connect();
     const database = client.db("food_delivery");
     const productCollection = database.collection("products");
+    const orderCollection = database.collection("orders");
 
     // get single api system
 
@@ -52,6 +53,15 @@ async function run() {
       const results = await productCollection.insertOne(products);
 
       res.json(results);
+    });
+
+    // add order post api system
+
+    app.post("/orders", async (req, res) => {
+      const order = req.body;
+      const result = await orderCollection.insertOne(order);
+      res.json(result);
+      console.log(result);
     });
 
     console.log("connect to database int hitting");
